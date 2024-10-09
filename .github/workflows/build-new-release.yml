@@ -1,6 +1,7 @@
 name: Build New OTP Release
 
 on:
+  workflow_dispatch:
   release:
     types: [created]
 
