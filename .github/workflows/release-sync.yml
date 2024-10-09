@@ -1,5 +1,6 @@
 name: Sync OTP Releases
 on:
+  workflow_dispatch:
   schedule:
     - cron: '*/15 * * * *'
 
