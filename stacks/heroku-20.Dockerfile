@@ -1,8 +1,6 @@
-FROM heroku/heroku:20
+FROM cgr.dev/chainguard/wolfi-base:latest
 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update
-RUN apt-get install -y gcc g++ make automake autoconf m4
-RUN apt-get install -y libncurses5-dev
-RUN apt-get install -y libssh-dev
-RUN apt-get install -y unixodbc-dev
+# Install the necessary packages using apk
+RUN apk update && \
+    apk add --no-cache gcc make automake autoconf m4 \
+    ncurses-dev libssh-dev unixodbc-dev
