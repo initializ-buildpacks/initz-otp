@@ -37,10 +37,13 @@ jobs:
       - name: Get OTP Version
         id: otp-version
         run: |
-          echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+         # Extract the tag from the GitHub reference
+         VERSION="${GITHUB_REF#refs/tags/}"
+         echo "OTP Version: $VERSION"
+         echo ::set-output name=version::$VERSION
 
       - name: Download OTP Source
-        run: wget https://github.com/erlang/otp/archive/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
+        run: wget https://github.com/erlang/otp/archive/refs/tags/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
 
       - name: Save OTP Source
         uses: actions/upload-artifact@v3
