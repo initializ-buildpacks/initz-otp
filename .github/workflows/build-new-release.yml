@@ -2,10 +2,6 @@ name: Build New OTP Release
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'OTP version to build (e.g., 24, 22)'
-        required: false
   release:
     types: [created]
 
@@ -41,20 +37,10 @@ jobs:
       - name: Get OTP Version
         id: otp-version
         run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION="${{ github.event.release.tag_name }}"
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ github.event.inputs.version }}"
-            if [ -z "$VERSION" ]; then
-              echo "Error: version input is required for workflow_dispatch."
-              exit 1
-            fi
-          else
-            echo "Error: Unsupported event."
-            exit 1
-          fi
-          echo "OTP Version: $VERSION"
-          echo "::set-output name=version::$VERSION"
+         # Extract the tag from the GitHub reference
+         VERSION="${GITHUB_REF#refs/tags/}"
+         echo "OTP Version: $VERSION"
+         echo ::set-output name=version::$VERSION
 
       - name: Download OTP Source
         run: wget https://github.com/erlang/otp/archive/refs/tags/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
@@ -98,15 +84,7 @@ jobs:
       - name: Get OTP Version
         id: otp-version
         run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION="${{ github.event.release.tag_name }}"
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ github.event.inputs.version }}"
-          else
-            echo "Error: Unsupported event."
-            exit 1
-          fi
-          echo "::set-output name=version::$VERSION"
+          echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
 
       - name: Get OTP Source
         uses: actions/download-artifact@v3
