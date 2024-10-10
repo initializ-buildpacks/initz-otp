@@ -60,7 +60,7 @@ jobs:
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_KEY }}
         with:
           upload_url: ${{ steps.update_release.outputs.upload_url }}
           asset_path: OTP-${{ steps.otp-version.outputs.version }}.tar.gz
@@ -142,7 +142,7 @@ jobs:
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_KEY }}
         with:
           upload_url: ${{ steps.update_release.outputs.upload_url }}
           asset_path: build/out/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
