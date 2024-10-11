@@ -1,7 +1,6 @@
 name: Build New OTP Release
 
 on:
-  workflow_dispatch:
   release:
     types: [created]
 
@@ -37,13 +36,10 @@ jobs:
       - name: Get OTP Version
         id: otp-version
         run: |
-         # Extract the tag from the GitHub reference
-         VERSION="${GITHUB_REF#refs/tags/}"
-         echo "OTP Version: $VERSION"
-         echo ::set-output name=version::$VERSION
+          echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
 
       - name: Download OTP Source
-        run: wget https://github.com/erlang/otp/archive/refs/tags/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
+        run: wget https://github.com/erlang/otp/archive/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
 
       - name: Save OTP Source
         uses: actions/upload-artifact@v3
@@ -60,7 +56,7 @@ jobs:
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_KEY }}
         with:
           upload_url: ${{ steps.update_release.outputs.upload_url }}
           asset_path: OTP-${{ steps.otp-version.outputs.version }}.tar.gz
@@ -142,7 +138,7 @@ jobs:
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_KEY }}
         with:
           upload_url: ${{ steps.update_release.outputs.upload_url }}
           asset_path: build/out/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
