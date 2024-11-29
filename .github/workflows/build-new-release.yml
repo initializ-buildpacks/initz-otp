@@ -142,5 +142,5 @@ jobs:
         with:
           upload_url: ${{ steps.update_release.outputs.upload_url }}
           asset_path: build/out/OTP-${{ steps.otp-version.outputs.version }}.tar.gz
-          asset_name: heroku-${{ matrix.stack }}.tar.gz
+          asset_name: initializ-${{ matrix.stack }}.tar.gz
           asset_content_type: application/gzip
